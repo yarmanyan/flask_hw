@@ -1,0 +1,17 @@
+# Конфигурация Docker Compose для запуска PostgreSQL.
+services:
+  db:
+    image: postgres:14.3-alpine3.15
+    ports:
+      - "5431:5432"   # ← 6 пробелов (на 2 больше, чем у ports)
+    environment:
+      # Значения берутся из файла .env.
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    healthcheck:
+      # Проверка готовности PostgreSQL.
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
